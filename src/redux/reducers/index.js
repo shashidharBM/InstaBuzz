@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux'
-import portfolioDetailedData from './portfolioReports'
+import transactionsList from './transactionsList'
 
 const rootReducer = combineReducers({
-  portfolioDetailedData
+  transactionsList
 });
 
 export default rootReducer;

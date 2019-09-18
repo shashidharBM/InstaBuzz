@@ -1,1 +1,1 @@
-export const getportfolioRepo = '<portfolio-api-endpoint-name>';
+export const getTransactions = 'transactions';

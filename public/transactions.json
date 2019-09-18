@@ -1,4 +1,4 @@
-export const businessData = {
+ {
 	"transactions": [
 		{
 			"account": "85225264",

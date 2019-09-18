@@ -1,12 +1,12 @@
 import React from 'react';
 import AppBar from './appBar';
-import PortfolioReports from '../reports/portfolioReports';
+import TransactionsList from '../transactions/transactionsList';
 
 const AppContainer = () => {
     return (
         <>
             <AppBar/>
-            <PortfolioReports />
+            <TransactionsList />
         </>
     );
 }
