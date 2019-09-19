@@ -1,12 +1,13 @@
-import React from 'react';
+import React, { useState} from 'react';
 import PropTypes from 'prop-types';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
+import { useDispatch } from 'react-redux'
+import Paper from '@material-ui/core/Paper';
 import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
-import Backdrop from '@material-ui/core/Backdrop';
-import Fade from '@material-ui/core/Fade';
-import Typography from '@material-ui/core/Typography';
+import Divider from '@material-ui/core/Divider';
+import DeleteIcon from '@material-ui/icons/HighlightOffSharp';
+import { toggleTransactionModal } from '../../redux/actions/transactionsList';
+import IconButton from '@material-ui/core/IconButton';
 
 const useStyles = makeStyles(theme => ({
     modal: {
@@ -18,71 +19,80 @@ const useStyles = makeStyles(theme => ({
       backgroundColor: theme.palette.background.paper,
       border: '2px solid #000',
       boxShadow: theme.shadows[5],
-      padding: theme.spacing(2, 4, 3),
+      padding: 30,
+      width: '25rem',
+      height: '10.5rem'
     },
+    labelContainer: {
+      marginTop: 5
+    },
+    headerLabel: {
+      fontSize: 16,
+      textAlign: 'left',
+      fontWeight: 'bold',
+    },
+    valueLabel: {
+      fontSize: 16,
+      fontWeight: 'normal',
+    },
+    modalTitle: {
+      fontSize: 20,
+      fontWeight: 'bold',
+    },
+    modalCloseBtn: {
+      position: 'relative',
+      bottom: 29,
+      left: 78
+    }
   }));
 
-const TransactionDetails = ({rowDetails, isOpen}) => {
+const TransactionDetails = ({rowDetails, isModalOpen}) => {
     const classes = useStyles();
-  const [open, setOpen] = React.useState(false);
-    console.log(rowDetails);
-  const handleOpen = () => {
-    setOpen(true);
-  };
+    const [open, setOpen] = useState(isModalOpen);
+    const dispatch = useDispatch();
 
-  const handleClose = () => {
-    setOpen(false);
-  };
+    const handleClose = (e) => {
+      e.preventDefault()
+        setOpen(!isModalOpen);
+        dispatch(toggleTransactionModal(!isModalOpen))
+      };
 
   return (
       <Modal
-        aria-labelledby="transition-modal-title"
-        aria-describedby="transition-modal-description"
+        aria-labelledby="Transaction Details"
+        aria-describedby="Transaction Details"
         className={classes.modal}
         open={open}
         onClose={handleClose}
-        closeAfterTransition
-        BackdropComponent={Backdrop}
-        BackdropProps={{
-          timeout: 500,
-        }}
       >
-       <Typography variant="subtitle2" gutterBottom>
-          Account No:
-        </Typography>
-        <Typography variant="subtitle1" component="h2">
-          Account No:
-        </Typography>
-        <Typography variant="subtitle2" gutterBottom>
-            Account Name:
-        </Typography>
-        <Typography variant="subtitle1" component="h2">
-          Account No:
-        </Typography>
-        <Typography variant="subtitle2" gutterBottom>
-            Currency Code:
-        </Typography>
-        <Typography variant="subtitle1" component="h2">
-          Account No:
-        </Typography>
-        <Typography variant="subtitle2" gutterBottom>
-            Amount:
-        </Typography>
-        <Typography variant="subtitle1" component="h2">
-          Account No:
-        </Typography>
-        <Typography variant="subtitle2" gutterBottom>
-          Transaction Type:
-        </Typography>
-        <Typography variant="subtitle1" component="h2">
-          Account No:
-        </Typography>
-        <Fade in={open}>
-          <div className={classes.paper}>
-            <h2 id="transition-modal-title">Transition modal</h2>
-            <p id="transition-modal-description">react-transiton-group animates me.</p>
+       <Paper className={classes.paper}>
+         <div className={classes.modalTitle}>Transaction Details For: {rowDetails.account}
+           <IconButton  aria-label="delete" onClick={handleClose} className={classes.modalCloseBtn}>
+                <DeleteIcon />
+            </IconButton>
+           </div>
+          <Divider />
+         <div className={classes.labelContainer}>
+           <span className={classes.headerLabel}>Account No:</span>
+           <span className={classes.valueLabel}>{rowDetails.account}</span>
           </div>
-        </Fade>
+          <div className={classes.labelContainer}>
+           <span className={classes.headerLabel}>Account Name:</span>
+           <span className={classes.valueLabel}>{rowDetails.accountName}</span>
+          </div>
+          <div className={classes.labelContainer}>
+           <span className={classes.headerLabel}>Currency Code:</span>
+           <span className={classes.valueLabel}>{rowDetails.currencyCode}</span>
+          </div>
+          <div className={classes.labelContainer}>
+           <span className={classes.headerLabel}>Amount:</span>
+           <span className={classes.valueLabel}>{rowDetails.amount}</span>
+          </div>
+          <div className={classes.labelContainer}>
+           <span className={classes.headerLabel}>Transaction Type:</span>
+           <span className={classes.valueLabel}>{rowDetails.transactionType}</span>
+          </div>
+              </Paper>
       </Modal>
   )
 }

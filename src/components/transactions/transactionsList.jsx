@@ -134,11 +134,11 @@ showHideManageColumns = (hiddenColumnNames) => {
 }
  
 transactionModalPopup = ({...others}) => {
-  const { row } = others;
-  return  <TransactionDetails  rowDetails={row} >
-    </TransactionDetails>
-   
-  console.log(row)
+  const { row } = {...others}
+  const { toggleTransactionModal, isModalOpen } = this.props;
+  this.setState({ transactionDetails: row });
+  toggleTransactionModal(!isModalOpen);
+  //this.setState({ isOpen: true });
 
 }
 
@@ -154,7 +154,7 @@ transactionModalPopup = ({...others}) => {
 }
 
 render() {
-  const { transactionsData, isLoading } = this.props;
+  const { transactionsData, isLoading, isModalOpen } = this.props;
 
   return (
     <Card >
@@ -194,7 +194,7 @@ render() {
           </Card>
         }
        {
-         <TransactionDetails  rowDetails={this.state.transactionDetails} isOpen={this.state.isOpen} />
+         isModalOpen && <TransactionDetails  rowDetails={this.state.transactionDetails} isModalOpen={isModalOpen} />
        }
       </CardContent>
    </Card>
@@ -204,7 +204,8 @@ render() {
 
 TransactionsList.propTypes = {
   isLoading: PropTypes.bool.isRequired,
-  transactionsData: PropTypes.array.isRequired
+  transactionsData: PropTypes.array.isRequired,
+  isModalOpen: PropTypes.bool.isRequired
 };
 
 TransactionsList.defaultProps = {
@@ -214,7 +215,7 @@ TransactionsList.defaultProps = {
 const mapStateToProps = state => ({
   transactionsData: state.transactionsList.transactionsData,
   isLoading: state.transactionsList.isLoading,
-  isOpen: state.transactionsList.isOpen
+  isModalOpen: state.transactionsList.isOpen
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({
