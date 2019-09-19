@@ -1,12 +1,14 @@
 import {
   FETCH_TRANSACTIONS_LIST_REQUEST,
   FETCH_TRANSACTIONS_LIST_SUCCESS,
-  FETCH_TRANSACTIONS_LIST_FAILURE
+  FETCH_TRANSACTIONS_LIST_FAILURE,
+  TOGGLE_TRANSACTIONS_MODAL_POPUP
 } from '../actions/actionTypes';
 
 const initialState = {
   isLoading: false,
-  transactionsData: []
+  transactionsData: [],
+  isOpen: false
 };
 
 export default function transactionsList(state = initialState, action) {
@@ -27,6 +29,11 @@ export default function transactionsList(state = initialState, action) {
         ...state,
         isLoading: false,
          }
+    case  TOGGLE_TRANSACTIONS_MODAL_POPUP: 
+      return {
+        ...state,
+        isOpen: action.payload,
+        }
        default:
         return state;
   }

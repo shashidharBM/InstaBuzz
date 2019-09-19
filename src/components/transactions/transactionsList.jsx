@@ -29,7 +29,8 @@ import { Template, TemplatePlaceholder } from '@devexpress/dx-react-core';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import TransactionsListExport from '../export-data/transactionsListExport';
-import { getTransactionsList } from '../../redux/actions/transactionsList';
+import { getTransactionsList, toggleTransactionModal } from '../../redux/actions/transactionsList';
+import TransactionDetails from './transactionDetails';
 
 const useStyles = makeStyles(theme => ({
   link: {
@@ -91,7 +92,9 @@ class TransactionsList extends PureComponent {
     super(props)
     this.state = {
       filters: {},
-      hiddenColumnNames: ['mask', 'iban', 'bic', 'currencyCode', 'currencySymbol' ]
+      hiddenColumnNames: ['mask', 'iban', 'bic', 'currencyCode', 'currencySymbol' ],
+      transactionDetails: {},
+      isOpen: false
     }
   }
 
@@ -130,15 +133,20 @@ showHideManageColumns = (hiddenColumnNames) => {
   this.setState({hiddenColumnNames: hiddenColumnNames});
 }
  
-transactionDetails = ({...others}) => {
-  console.log({...others})
+transactionModalPopup = ({...others}) => {
+  const { row } = others;
+  return  <TransactionDetails  rowDetails={row} >
+    </TransactionDetails>
+   
+  console.log(row)
+
 }
 
  customTableCell = ({column, value, ...others}) => {
   const classes = useStyles();
   if (column.name === 'account' && column.isLink) {
     return <Table.Cell column={column} value={value} {...others} 
-          onClick={() => { this.transactionDetails({...others})}} className={classes.link} />
+          onClick={() => { this.transactionModalPopup({...others})}} className={classes.link} />
   }
   else {
     return <Table.Cell column={column} value={value} {...others} />
@@ -185,7 +193,9 @@ render() {
             </CardContent>
           </Card>
         }
-       
+       {
+         <TransactionDetails  rowDetails={this.state.transactionDetails} isOpen={this.state.isOpen} />
+       }
       </CardContent>
    </Card>
   )
@@ -204,10 +214,12 @@ TransactionsList.defaultProps = {
 const mapStateToProps = state => ({
   transactionsData: state.transactionsList.transactionsData,
   isLoading: state.transactionsList.isLoading,
+  isOpen: state.transactionsList.isOpen
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({
-  getTransactionsList
+  getTransactionsList,
+  toggleTransactionModal
 }, dispatch);
 
 export default connect(
