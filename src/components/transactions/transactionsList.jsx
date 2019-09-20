@@ -74,7 +74,7 @@ const columns = [
   },
   {
     name: 'mask',
-    title: 'MaMASKsk'
+    title: 'MASK'
   },
   {
     name: 'iban',
@@ -138,8 +138,6 @@ transactionModalPopup = ({...others}) => {
   const { toggleTransactionModal, isModalOpen } = this.props;
   this.setState({ transactionDetails: row });
   toggleTransactionModal(!isModalOpen);
-  //this.setState({ isOpen: true });
-
 }
 
  customTableCell = ({column, value, ...others}) => {
